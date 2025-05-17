@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     inlineStyles: true
   },
   image: {
-    domains: ['https://cdn.dummyjson.com']
+    domains: ['https://myfood-api.onrender.com/']
   },
   unhead: {
     renderSSRHeadOptions: {

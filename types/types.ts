@@ -8,8 +8,11 @@ export interface RecipeResponse {
 export interface Recipe {
     id:                 number;
     name:               string;
+    origin:             string;
+    description:        string;
     ingredients:        string[];
     instructions:       string[];
+    steps:              string[];
     prepTimeMinutes:    number;
     cookTimeMinutes:    number;
     servings:           number;

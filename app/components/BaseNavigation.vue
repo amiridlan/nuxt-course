@@ -7,14 +7,14 @@
     <nav class="flex container items-center">
       <NuxtLink to="/" class="flex gap-1 items-center">
 <NuxtImg width="56px" src="/icon-green.png" format="webp" alt="" />
-        <span class="text-3xl font-bold">Nuxtcipes</span>
+        <span class="text-3xl font-bold">SajianMalaya</span>
       </NuxtLink>
       <ul class="flex gap-6 ml-auto text-xl font-bold capitalize">
         <li>
-          <NuxtLink to="/" >Home</NuxtLink>
+          <NuxtLink to="/" >Utama</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/about">About</NuxtLink>
+          <NuxtLink to="/about">Tentang Kami</NuxtLink>
         </li>
       </ul>
     </nav>

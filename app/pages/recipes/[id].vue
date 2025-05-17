@@ -1,93 +1,51 @@
 <script setup lang="ts">
-import { type Recipe } from '../../../types/types';
-const {id} = useRoute().params;
+import { useRoute } from 'vue-router';
+import { type Recipe } from '~~/types/types';
 
-const {data, error} = await useFetch<Recipe>(`https://dummyjson.com/recipes/${id}`);
+const route = useRoute();
+const id = route.params.id as string;
 
-if (error.value) {
-    throw createError({
-        statusCode: error.value?.statusCode,
-        statusMessage: error.value?.statusMessage,
-    })
-}
+const { data: recipe, error } = await useFetch<Recipe>(`https://myfood-api.onrender.com/api/recipes/id/${id}`);
 
 useSeoMeta({
-  title: data.value?.name,
-  description: "Recipes for you to cook!",
-  ogTitle: data.value?.name,
-  ogDescription: "Recipes for you to cook!",
-  ogImage: data.value?.image,
-  ogUrl: `http://localhost:3000/recipes/${data.value?.id}`,
-  twitterTitle: data.value?.name,
-  twitterDescription: "Recipes for you to cook!",
-  twitterImage: data.value?.image,
-  twitterCard: 'summary'
-})
+  title: recipe?.value?.name || 'Recipe Details',
+  description: '',
+  ogTitle: recipe?.value?.name || 'Recipe Details',
+  ogDescription: '',
+  ogImage: recipe?.value?.image || '/nuxt-course-hero.png',
+  ogUrl: `https://nuxtrecipes.netlify.app/recipes/${id}`,
+  twitterTitle: recipe?.value?.name || 'Recipe Details',
+  twitterDescription: '',
+  twitterImage: recipe?.value?.image || '/nuxt-course-hero.png',
+  twitterCard: "summary",
+});
 </script>
 
 <template>
-    <div class="flex flex-col max-w-screen-lg container py-20">
-    <!-- Header -->
-    <div class="flex flex-col mb-6">
-      <h2 class="text-5xl mb-4 font-semibold">{{ data?.name }}</h2>
-      <div class="flex gap-4 text-xl mb-6">
-        <div class="flex items-center gap-1">
-          <Icon name="mdi:clock-time-eight-outline" style="color: #f79f1a" />
-          <span>{{ data?.cookTimeMinutes }}</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <Icon name="mdi:fire" style="color: #f79f1a" />
-          <span>{{ data?.caloriesPerServing }}</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <Icon name="mdi:star" style="color: #f79f1a" />
-          <span>{{ data?.rating }} ({{ data?.reviewCount }})</span>
-        </div>
+  <main class="container py-10">
+    <div v-if="error" class="text-red-500 text-center">Failed to load recipe. Please try again later.</div>
+    <div v-else-if="!recipe" class="text-center">Loading...</div>
+    <div v-else class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold mb-4">{{ recipe.name || 'No Name' }}</h1>
+      <NuxtImg :src="recipe.image || ''" alt="" class="rounded-lg mb-6" />
+      <div class="mb-4">
+        <strong>Cook Time:</strong> {{ recipe.cookTimeMinutes ?? 'N/A' }} minutes
       </div>
-      <hr />
+      <div class="mb-4">
+        <strong>Calories per Serving:</strong> {{ recipe.caloriesPerServing ?? 'N/A' }}
+      </div>
+      <div class="mb-4">
+        <strong>Ingredients:</strong>
+        <ul class="list-disc list-inside">
+          <li v-for="(ingredient, index) in recipe.ingredients || []" :key="index">{{ ingredient }}</li>
+        </ul>
+      </div>
+      <div class="mb-4">
+        <strong>Instructions:</strong>
+        <ol class="list-decimal list-inside">
+          <li v-for="(step, index) in recipe.steps || []" :key="index">{{ step }}</li>
+        </ol>
+      </div>
     </div>
-
-    <!-- Image -->
-    <NuxtImg
-      :src="data?.image"
-      densities="x1"
-      sizes="xs:100vw sm:100vw md:100vw lg:100vw"
-      class="w-full max-h-[500px] object-cover rounded-md shadow-sm mb-12"
-      alt=""
-    />
-
-    <!-- Ingredients -->
-    <div class="mb-8">
-      <h2 class="text-3xl font-semibold mb-4">Ingredients</h2>
-      <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-lg">
-        <li v-for="ingredient in data?.ingredients">
-          <label class="flex gap-2 items-center">
-            <input class="hidden peer" type="checkbox" />
-            <div
-              class="relative w-6 h-6 rounded-full border-2 border-dodgeroll-gold-500 flex items-center justify-center peer-checked:after:absolute peer-checked:after:w-4 peer-checked:after:h-4 peer-checked:after:bg-dodgeroll-gold peer-checked:after:rounded-full"
-            ></div>
-            <span class="peer-checked:line-through">
-              {{ ingredient }}
-            </span>
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Instructions -->
-    <div>
-      <h2 class="text-3xl font-medium mb-4">Instructions</h2>
-      <ul class="flex flex-col text-lg gap-4">
-        <li v-for="(instruction, index) in data?.instructions" class="flex gap-2">
-          <span
-            class="flex items-center justify-center bg-dodgeroll-gold-500 w-7 h-7 rounded-full text-white text-sm"
-          >
-            {{ index + 1 }}
-          </span>
-          <span class="flex-1">{{ instruction }}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
+  </main>
 </template>
-
