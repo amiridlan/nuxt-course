@@ -1,11 +1,40 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
 import { type Recipe } from '~~/types/types';
 import RecipeCard from '~/components/RecipeCard.vue';
+import RecipeSearchFilter from '~/components/RecipeSearchFilter.vue';
 
 const { fetchRecipes } = useRecipes();
 
 // Fetch recipes from Supabase
 const { data, error } = await useAsyncData<Recipe[]>('recipes', () => fetchRecipes());
+
+const searchQuery = ref('');
+const selectedOrigin = ref('');
+const allRecipes = ref<Recipe[]>(data.value || []);
+
+watch(data, (newData) => {
+  allRecipes.value = newData || [];
+});
+
+const recipes = computed(() => {
+  let filtered = allRecipes.value;
+  if (searchQuery.value) {
+    filtered = filtered.filter(r => r.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  }
+  if (selectedOrigin.value) {
+    filtered = filtered.filter(r => r.origin === selectedOrigin.value);
+  }
+  return filtered;
+});
+
+const handleSearch = (query: string) => {
+  searchQuery.value = query;
+};
+
+const handleFilter = (origin: string) => {
+  selectedOrigin.value = origin;
+};
 
 useSeoMeta({
   title: "SajianMalaya",
@@ -44,10 +73,13 @@ useSeoMeta({
             </div>
         </section>
 
+        
+
         <section class="py-20 container">
         <h2 class="text-3xl lg:text-5xl mb-2">Resipi Terbaru</h2>
-        <div v-if="!error && data?.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-            <RecipeCard v-for="recipe in data" :key="recipe.id" :recipe="recipe" />
+        <RecipeSearchFilter @search="handleSearch" @filter="handleFilter" />
+        <div v-if="!error && recipes.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
+            <RecipeCard v-for="recipe in recipes" :key="recipe.id" :recipe="recipe" />
         </div>
         <p v-else class="text-xl">Data tidak dapat dipaparkan. Sila cuba lagi kemudian.</p>
         </section>

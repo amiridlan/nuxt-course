@@ -15,7 +15,7 @@ defineProps<{
                 format="jpg" 
                 densities="x1" 
                 alt="" 
-                class="rounded-t-md aspect-square" 
+                class="rounded-t-md aspect-square object-cover" 
             />
             <div class="flex flex-col py-6 px-4 flex-1">
                 <p class="text-xl lg:text-2xl font-semibold mb-2">{{ recipe.name || 'No Name' }}</p>
