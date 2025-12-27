@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image'
   ],
+  
 
   googleFonts: {
     families: {
@@ -56,12 +57,5 @@ export default defineNuxtConfig({
     }
   },
 
-  ui: {
-    global: true
-  },
-  colorMode: {
-    preference: 'light',
-    fallback: 'light',
-    classSuffix: ''
-  }
+  
 })
