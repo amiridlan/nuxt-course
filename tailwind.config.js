@@ -4,27 +4,27 @@ export default {
   theme: {
     extend: {
       colors: {
-
         // 60-30-10 Color Palette
         "primary-dark": "#1B211A",      // 60% - Main background
         "primary-green": "#8BAE66",     // 30% - Primary actions
         "accent-cream": "#EBD5AB",      // 10% - Accents
         
+        // Legacy colors for compatibility
         "dodgeroll-gold": {
-          50: "#fff9eb",
-          100: "#fdecc8",
-          200: "#fbd88c",
-          300: "#f9bd50",
-          400: "#f79f1a",
-          500: "#f1820f",
-          600: "#d65f09",
-          700: "#b13f0c",
-          800: "#903210",
-          900: "#762911",
-          950: "#441204",
+          50: "#fefce8",
+          100: "#fef9c3",
+          200: "#fef08a",
+          300: "#fde047",
+          400: "#EBD5AB",
+          500: "#d4a574",
+          600: "#ca8a04",
+          700: "#a16207",
+          800: "#854d0e",
+          900: "#713f12",
+          950: "#422006",
         },
-        "apple-green": "#046E1B",
-        "dire-wolf": "#292727",
+        "apple-green": "#8BAE66",
+        "dire-wolf": "#1B211A",
       },
     },
     fontFamily: {
@@ -37,4 +37,3 @@ export default {
   },
   plugins: [],
 }
-

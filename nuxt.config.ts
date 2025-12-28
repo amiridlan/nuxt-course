@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts'
   ],
 
+  // Ensure components are auto-imported
   components: true,
 
   googleFonts: {

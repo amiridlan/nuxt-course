@@ -1,20 +1,36 @@
 /* Force light mode - override any dark mode styles */
-html.dark {
+:root {
   color-scheme: light !important;
 }
 
-/* Remove all dark mode classes */
-html {
+html,
+html.dark,
+html[data-theme='dark'] {
   color-scheme: light !important;
 }
 
-/* Ensure cards stay white */
-.dark [class*='card'] {
+/* Force all UCard components to have white background */
+[class*='bg-gray-900'],
+[class*='bg-gray-950'],
+.dark [class*='card'],
+.dark .bg-white {
   background-color: white !important;
 }
 
-/* Override any dark mode background colors */
-.dark {
-  background-color: #1b211a !important;
-  color: white !important;
+/* Force text colors in cards */
+.dark [class*='text-gray-900'] {
+  color: #1b211a !important;
+}
+
+.dark [class*='text-gray-700'] {
+  color: #374151 !important;
+}
+
+.dark [class*='text-gray-600'] {
+  color: #4b5563 !important;
+}
+
+/* Prevent any dark mode from being applied */
+html.dark * {
+  color-scheme: light !important;
 }
