@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const currentYear = new Date().getFullYear();
+const { $pageLoading } = useNuxtApp();
 
 const socialLinks = [
   {
@@ -22,6 +23,9 @@ const socialLinks = [
 
 <template>
   <div class="flex flex-col min-h-screen">
+    <!-- Loading Spinner Overlay -->
+    <LoadingSpinner v-if="$pageLoading" />
+    
     <BaseNavigation />
     
     <div class="flex-grow">
